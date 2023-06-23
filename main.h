@@ -1,5 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
+#define _GNU_SOURCE
 
 /* Includes */
 #include <stdio.h>
@@ -7,6 +8,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <string.h>
+#include <ctype.h>
 
 /* Structs */
 /**
@@ -40,38 +42,45 @@ typedef struct instruction_s
 } instruction_t;
 
 /**
- * struct global_struct - opcode and their functions
+ * struct bus - opcode and their functions
  * @file: the opcode
- * @handle_opcode: function to handle the opcode
- * @buffer: pointer to buffer
+ * @lifi: function
+ * @content: pointer to buffer
  * Description: opcode and its function
  */
-struct global_struct
+typedef struct bus
 {
+	char *arg;
 	FILE *file;
-	int handle_opcode;
-	char *buffer;
-	stack_t **stack;
-}
+	char *content;
+	int lifi;
+} bus_t;
 
-extern global_struct global_variables;
+extern bus_t bus;
 /* function prototypes */
 
 int read_file(char *filename, stack_t **stack);
 char *get_line(char* line, int line_number);
-typedef void (*instruction) (stack_t **stack, unsigned int line_number);
-instruction get_op_func (char *str);
+typedef void (*instruct_func) (stack_t **stack, unsigned int line_number);
+instruct_func get_op_func (char *str);
 
-int _pall(stack_t **stack, unsigned int line_number);
-int _push(stack_t **stack, unsigned int line_number);
-int _pint(stack_t **stack, unsigned int line_number);
-int _pop(stack_t **stack, unsigned int line_number);
-int _swap(stack_t **stack, unsigned int line_number);
-int _nop(stack_t **stack, unsigned int line_number);
+void _pall(stack_t **head, unsigned int line_number);
+void _push(stack_t **head, unsigned int line_number);
+void _pint(stack_t **head, unsigned int line_number);
+void _pop(stack_t **head, unsigned int line_number);
+void _swap(stack_t **head, unsigned int line_number);
+void _nop(stack_t **head, unsigned int line_number);
+void free_stack(stack_t *head);
 
+void _add(stack_t **head, unsigned int counter);
+void _queue(stack_t **head, unsigned int counter);
+void _stack(stack_t **head, unsigned int counter);
 
+void addqueue(stack_t **head, int n);
+void addnode(stack_t **head, int n);
+void print_all(stack_t **head, unsigned int counter);
 		
-		
+int execute(char *content, stack_t **stack, unsigned int counter, FILE *file);
 
 
 #endif

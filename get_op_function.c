@@ -2,7 +2,7 @@
 
 instruct_func get_op_func(char *str)
 {
-	int i;
+	int i = 0;
 
 	instruction_t instruction[] = {
 		{"push", _push},
@@ -15,8 +15,7 @@ instruct_func get_op_func(char *str)
 		{NULL, NULL}
 	};
 
-	i = 0;
-	while (instruction[i].f != NULL && strcmp(instruct[i].opcode, str) != 0)
+	while (instruction[i].f != NULL && strcmp(instruction[i].opcode, str) != 0)
 	{
 		i++;
 	}
